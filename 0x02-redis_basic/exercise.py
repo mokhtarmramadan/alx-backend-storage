@@ -1,8 +1,20 @@
 #!/usr/bin/env python3
 ''' Redis '''
+from functools import wraps
 import redis
 import uuid
-from typing import Union, Callable
+from typing import Union, Callable, Any
+
+
+def count_calls(method: Callable) -> Callable:
+    ''' A decorator to count how many time Cache methods are called '''
+    @wraps(method)
+    def wrapper(self, *args, **kwargs) -> Any:
+        '''returns the method after incrementing the counter '''
+        if isinstance(self._redis, redis.Redis):
+            self._redis.incr(method.__qualname__)
+        return method(self, *args, **kwargs)
+    return wrapper
 
 
 class Cache:
@@ -12,6 +24,7 @@ class Cache:
         self._redis = redis.Redis()
         self._redis.flushdb()
 
+    @count_calls
     def store(self, data: Union[str, bytes, int, float]) -> str:
         ''' generate a random key (e.g. using uuid),
         store the input data in Redis '''
