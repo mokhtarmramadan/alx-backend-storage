@@ -28,3 +28,13 @@ class Cache:
         if fn is not None:
             data = fn(key)
         return data
+
+    def get_str(self, key: str) -> str:
+        ''' calls get passing to it a key and a callable fun that
+        spcefies the type as str '''
+        return self.get(key, lambda x: x.decode('utf-8'))
+
+    def get_int(self, key: str) -> int:
+        ''' calls get passing to it a key and a callable fun that
+        spcefies the type as an int '''
+        return self.get(key, lambda x: int(x))
