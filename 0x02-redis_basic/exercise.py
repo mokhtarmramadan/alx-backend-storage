@@ -2,7 +2,7 @@
 ''' Redis '''
 import redis
 import uuid
-from typing import Union
+from typing import Union Callable
 
 
 class Cache:
@@ -20,7 +20,7 @@ class Cache:
         return key
 
     def get(self, key: str, fn:
-            callable = None) -> Union[str, bytes, int, float]:
+            Callable = None) -> Union[str, bytes, int, float]:
         ''' take a key string argument and an optional Callable argument
         named fn. This callable will be used to convert the data back to the
         desired format '''
