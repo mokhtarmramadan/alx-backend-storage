@@ -18,3 +18,13 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
+
+    def get(self, key: str, fn:
+            callable = None) -> Union[str, bytes, int, float]:
+        ''' take a key string argument and an optional Callable argument
+        named fn. This callable will be used to convert the data back to the
+        desired format '''
+        data = self._redis.get(key)
+        if fn is not None:
+            data = fn(key)
+        return data
